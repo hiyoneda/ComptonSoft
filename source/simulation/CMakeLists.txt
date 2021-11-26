@@ -11,6 +11,7 @@ include_directories(
   ${ROOT_INC_DIR}
   ${G4_INC_DIR}
   ${CLHEP_INC_DIR}
+  ${HEALPIX_INC_DIR}
   ${ADD_INC_DIR}
   ${SIMX_INC_DIR}
   ${CFITSIO_INC_DIR}
@@ -82,7 +83,7 @@ add_library(CSSimulation SHARED
 
 target_link_libraries(CSSimulation
   CSCore CSModules ${ANLG4_LIB} ${ANLNEXT_LIB}
-  ${ROOT_LIB} ${G4_LIB} ${CLHEP_LIB} ${ADD_LIB} ${SIMX_LIB} ${CFITSIO_LIB})
+  ${ROOT_LIB} ${G4_LIB} ${CLHEP_LIB} ${HEALPIX_LIB} ${ADD_LIB} ${SIMX_LIB} ${CFITSIO_LIB})
 
 install(TARGETS CSSimulation LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
