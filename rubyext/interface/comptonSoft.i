@@ -126,6 +126,12 @@
 #ifdef USE_FITSIO
 #include "CelestialSourcePrimaryGen.hh"
 #endif
+#ifdef USE_HEALPIX
+#include "AllSkyPrimaryGenPowerLaw.hh"
+#endif
+#ifdef USE_HEALPIX
+#include "AllSkyPrimaryGen.hh"
+#endif
 #include "RadioactiveDecayUserActionAssembly.hh"
 #include "ActivationUserActionAssembly.hh"
 #ifdef USE_SIMX
@@ -819,11 +825,13 @@ public:
   SetBadFrames();
 };
 
+
 class SetDynamicPedestals : public VCSModule
 {
 public:
   SetDynamicPedestals();
 };
+
 
 class SetPedestalsByMedian : public VCSModule
 {
@@ -1000,6 +1008,26 @@ class CelestialSourcePrimaryGen : public anlgeant4::IsotropicPrimaryGen
 public:
   CelestialSourcePrimaryGen();
   ~CelestialSourcePrimaryGen();
+};
+
+#endif
+
+#ifdef USE_HEALPIX
+class AllSkyPrimaryGenPowerLaw : public anlgeant4::IsotropicPrimaryGen
+{
+public:
+  AllSkyPrimaryGenPowerLaw();
+  ~AllSkyPrimaryGenPowerLaw();
+};
+
+#endif
+
+#ifdef USE_HEALPIX
+class AllSkyPrimaryGen : public comptonsoft::AllSkyPrimaryGenPowerLaw
+{
+public:
+  AllSkyPrimaryGen();
+  ~AllSkyPrimaryGen();
 };
 
 #endif

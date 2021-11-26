@@ -61,6 +61,13 @@ if(CS_USE_FITSIO)
     )
 endif()
 
+if(CS_USE_HEALPIX)
+  set(CS_SIMULATION_CLASSES_HEALPIX
+    src/AllSkyPrimaryGen.cc
+    src/AllSkyPrimaryGenPowerLaw.cc
+    )
+endif()
+
 if(CS_USE_SIMX)
   set(CS_SIMULATION_CLASSES_SIMX
     # basic interface
@@ -78,6 +85,7 @@ endif(CS_USE_SIMX)
 add_library(CSSimulation SHARED
   ${CS_SIMULATION_CLASSES_BASIC}
   ${CS_SIMULATION_CLASSES_FITSIO}
+  ${CS_SIMULATION_CLASSES_HEALPIX}
   ${CS_SIMULATION_CLASSES_SIMX}
   )
 

@@ -101,6 +101,8 @@ class SimXPrimaryGen;
 class AHRadiationBackgroundPrimaryGen;
 class AEObservationPrimaryGen;
 class CelestialSourcePrimaryGen;
+class AllSkyPrimaryGenPowerLaw;
+class AllSkyPrimaryGen;
 class RadioactiveDecayUserActionAssembly;
 class ActivationUserActionAssembly;
 class AHStandardUserActionAssembly;
