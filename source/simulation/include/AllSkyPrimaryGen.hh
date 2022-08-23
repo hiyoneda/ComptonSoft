@@ -59,31 +59,43 @@ public:
 
 protected:
   loadMultiBandImages();
-  int sampleMap();
-  int samplePixel();
-  
+  constructMaps(anlnext::ANLStatus& status);
   
 private:
+  /* module parameters */
   std::string filename_;
-  int hdu_index_;
+  int hdu_index_map_;
+  int hdu_index_energy_;
   double origin_longitude_;
   double origin_latitude_;
   double pole_longitude_;
   double pole_latitude_;
 
+  /* input from FITS file */
+  /**
+     map_mode_ is given by FITS header keyword MAPMODE
+     1: monochromatic, 2: multiband-images, 3: power law
+  */
   std::string map_mode_;
+
+  /**
+     num_maps_ is given by FITS header keyword NMAP
+  */
   int num_maps_;
+
   std::vector<Healpix_Map<double>> maps_;
   std::vector<double> energies_;
 
+  /* internal class members */
+  
   struct band_intensity {
     double emin;
     double emax;
-    double alpha;
+    double photon_index;
     double intensity;
   };
   std::vector<Healpix_Map<band_intensity>> band_maps_;
-  std::vector<double> integrals_;  
+  std::vector<double> integrals_;
 };
 
 } /* namespace comptonsoft */

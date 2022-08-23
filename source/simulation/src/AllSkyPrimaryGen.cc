@@ -66,7 +66,8 @@ ANLStatus AllSkyPrimaryGen::mod_define()
   }
  
   define_parameter("filename", &mod_class::filename_);
-  define_parameter("hdu_index", &mod_class::hdu_index_);
+  define_parameter("hdu_index_map", &mod_class::hdu_index_map_);
+  define_parameter("hdu_index_energy", &mod_class::hdu_index_energy_);
   define_parameter("origin_longitude_", &mod_class::origin_longitude_);
   define_parameter("origin_latitude_", &mod_class::origin_latitude_);
   define_parameter("pole_longitude_", &mod_class::pole_longitude_);
@@ -84,13 +85,21 @@ ANLStatus AllSkyPrimaryGen::mod_initialize()
 
   std::unique_ptr<fitshandle> fits(new fitshandle);
   fits->open(filename_);
-  fits->goto_hdu(hdu_index_);
-  fits->get_key("MAP_MODE", map_mode_);
+  fits->goto_hdu(hdu_index_map_);
+  fits->get_key("MAPMODE", map_mode_);
   fits->get_key("NMAP", num_maps_);
 
-  if (map_mode_ == "multi-band") {
+  if (map_mode_ == "multiband") {
     loadMultiBandImages(fits.get(), num_maps_, status);
   }
+#if 0
+  else if (map_mode_ == "mono") {
+    loadMonochromaticImage(fits.get(), num_maps_, status);
+  }
+  else if (map_mode_ == "powerlaw") {
+    loadPowerLawImage(fits.get(), num_maps_, status);
+  }
+#endif
   else {
     std::cout << "Undefined map mode: " << map_mode_ << std::endl;
     status = AS_QUIT_ERROR;
@@ -106,13 +115,14 @@ ANLStatus AllSkyPrimaryGen::mod_initialize()
   G4ThreeVector yaxis();
   rotation_matrix_;
 
-  constructMaps();
+  constructMaps(status); // to calculate multiband maps and integrals
 
   return AS_OK;
 }
 
 void AllSkyPrimaryGen::makePrimarySetting()
 {
+  // to be implemented
   using std::cos;
   using std::sin;
   using std::sqrt;
@@ -163,6 +173,7 @@ void AllSkyPrimaryGen::makePrimarySetting()
 
 ANLStatus AllSkyPrimaryGen::mod_end_run()
 {
+    // to be implemented
   const double radius = Radius();
   const double area = CLHEP::pi*radius*radius;
   const double realTime = TotalEnergy()/(sourceFlux_*area);
@@ -187,12 +198,17 @@ ANLStatus AllSkyPrimaryGen::mod_end_run()
 
 void AllSkyPrimaryGen::loadMultiBandImages(fitshandle* fits, int num_maps_, ANLStatus& status)
 {
+  // to be implemented
   maps_.resize(num_maps_);
   for (int i=0; i<num_maps_; i++) {
     read_Healpix_map_from_fits(*fits, maps_[i], i+1);
   }
 }
 
+void AllSkyPrimaryGen::constructMaps(ANLStatus& status)
+{
+  // to be implemented
+}
 
 } /* namespace comptonsoft */
 
