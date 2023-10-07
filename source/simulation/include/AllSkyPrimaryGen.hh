@@ -26,9 +26,12 @@
 #include "BasicPrimaryGen.hh"
 #include "IsotropicPrimaryGen.hh"
 #include "G4ThreeVector.hh"
+#include "G4RotationMatrix.hh"
 
 #include <healpix_cxx/healpix_base.h>
 #include <healpix_cxx/healpix_map.h>
+#include <healpix_cxx/healpix_map_fitsio.h>
+#include <healpix_cxx/fitshandle.h>
 
 namespace comptonsoft {
 
@@ -42,7 +45,7 @@ namespace comptonsoft {
  *
  */
 
-using image_t = boost::multi_array<double, 2>;
+//using image_t = boost::multi_array<double, 2>;
 
 class AllSkyPrimaryGen : public anlgeant4::IsotropicPrimaryGen
 {
@@ -58,9 +61,15 @@ public:
   void makePrimarySetting() override;
 
 protected:
-  loadMultiBandImages();
-  constructMaps(anlnext::ANLStatus& status);
-  
+  void loadMultiBandImages(fitshandle* fits, int num_maps_, anlnext::ANLStatus& status);
+  void constructMaps(anlnext::ANLStatus& status);
+  void constructMapsMultiBand(anlnext::ANLStatus& status);
+  void calculateMapIntegrals(anlnext::ANLStatus& status);
+  void setCoordinate(anlnext::ANLStatus& status);
+  int sampleBandIndex();
+  int samplePixel(int band_index_);
+  G4ThreeVector convertCoordinate(const G4RotationMatrix r, G4ThreeVector vector);
+
 private:
   /* module parameters */
   std::string filename_;
@@ -82,9 +91,17 @@ private:
      num_maps_ is given by FITS header keyword NMAP
   */
   int num_maps_;
+  int num_bands_;
+  int num_pixel_;
+  int num_side_;
+
+  double pixel_area_;
 
   std::vector<Healpix_Map<double>> maps_;
   std::vector<double> energies_;
+
+  std::vector<double> image_theta;
+  std::vector<double> image_phi;
 
   /* internal class members */
   
@@ -92,10 +109,14 @@ private:
     double emin;
     double emax;
     double photon_index;
-    double intensity;
+    //double intensity;
+    double integrated_intensity;
   };
   std::vector<Healpix_Map<band_intensity>> band_maps_;
-  std::vector<double> integrals_;
+  std::vector<double> band_integrals_;
+  std::vector< std::vector<double> > pixel_integrals_;
+
+  double threshold_zero_angle = 1e-5;
 };
 
 } /* namespace comptonsoft */

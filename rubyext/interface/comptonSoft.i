@@ -1,5 +1,6 @@
 %module comptonSoft
 %{
+include "AllSkyPrimaryGen"
 #include "ConstructDetector.hh"
 #include "ConstructDetectorForSimulation.hh"
 #include "VCSModule.hh"

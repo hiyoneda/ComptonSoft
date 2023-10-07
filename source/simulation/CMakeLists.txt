@@ -15,6 +15,8 @@ include_directories(
   ${SIMX_INC_DIR}
   ${CFITSIO_INC_DIR}
   ${BOOST_INC_DIR}
+  /usr/local/Cellar/healpix/3.82_1/include/healpix_cxx
+  /usr/local/Cellar/healpix/3.82_1/include/libsharp
   )
 
 link_directories(
@@ -25,6 +27,7 @@ link_directories(
   ${CLHEP_LIB_DIR}
   ${SIMX_LIB_DIR}
   ${CFITSIO_LIB_DIR}
+  /usr/local/Cellar/healpix/3.82_1/lib
   )
 
 set(CS_SIMULATION_CLASSES_BASIC
@@ -57,6 +60,7 @@ if(CS_USE_FITSIO)
     src/AHRayTracingPrimaryGen.cc
     src/AEObservationPrimaryGen.cc
     src/CelestialSourcePrimaryGen.cc
+    src/AllSkyPrimaryGen.cc
     )
 endif()
 
@@ -82,7 +86,7 @@ add_library(CSSimulation SHARED
 
 target_link_libraries(CSSimulation
   CSCore CSModules ${ANLG4_LIB} ${ANLNEXT_LIB}
-  ${ROOT_LIB} ${G4_LIB} ${CLHEP_LIB} ${ADD_LIB} ${SIMX_LIB} ${CFITSIO_LIB})
+  ${ROOT_LIB} ${G4_LIB} ${CLHEP_LIB} ${ADD_LIB} ${SIMX_LIB} ${CFITSIO_LIB} /usr/local/Cellar/healpix/3.82_1/lib/libchealpix.dylib /usr/local/Cellar/healpix/3.82_1/lib/libhealpi_cxx.dylib /usr/local/Cellar/healpix/3.82_1/lib/libsharp.dylib)
 
 install(TARGETS CSSimulation LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
