@@ -61,6 +61,7 @@ if(CS_USE_FITSIO)
     src/AEObservationPrimaryGen.cc
     src/CelestialSourcePrimaryGen.cc
     src/AllSkyPrimaryGen.cc
+    #src/AllSkyPrimaryGenPowerLaw.cc
     )
 endif()
 
