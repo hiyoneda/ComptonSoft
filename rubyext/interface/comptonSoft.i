@@ -1,6 +1,5 @@
 %module comptonSoft
 %{
-#include "AllSkyPrimaryGen.hh"
 #include "ConstructDetector.hh"
 #include "ConstructDetectorForSimulation.hh"
 #include "VCSModule.hh"
@@ -71,7 +70,6 @@
 #endif
 #include "FillFrame.hh"
 #include "LoadFrame.hh"
-#include "LoadReducedFrame.hh"
 #include "XrayEventCollection.hh"
 #include "XrayEventSelection.hh"
 #include "AnalyzeFrame.hh"
@@ -95,30 +93,15 @@
 #include "HistogramXrayEventSpectrum.hh"
 #include "HistogramXrayEventAzimuthAngle.hh"
 #include "HistogramXrayEventProperties.hh"
-#include "HistogramDecodedImage.hh"
 #include "HistogramRawFrameImage.hh"
 #include "ExtractXrayEventImage.hh"
 #include "ProcessCodedAperture.hh"
 #ifdef USE_HSQUICKLOOK
 #include "PushToQuickLookDB.hh"
 #endif
-#ifdef USE_HSQUICKLOOK
-#include "PushXrayEventToQuickLookDB.hh"
-#endif
-#ifdef USE_HSQUICKLOOK
-#include "PushHistogramToQuickLookDB.hh"
-#endif
-#ifdef USE_HSQUICKLOOK
-#include "LoadMetaDataFile.hh"
-#endif
-#ifdef USE_HSQUICKLOOK
-#include "ExtractXrayEventImageFromQuickLookDB.hh"
-#endif
 #include "GetInputFilesFromDirectory.hh"
 #include "SelectEventsWithDetectorSpectrum.hh"
-#ifdef USE_FITSIO
 #include "AssignSXIGrade.hh"
-#endif
 #ifdef USE_FITSIO
 #include "AEAttitudeCorrection.hh"
 #endif
@@ -142,11 +125,8 @@
 #endif
 #ifdef USE_FITSIO
 #include "CelestialSourcePrimaryGen.hh"
-#endif
-#ifdef USE_HEALPIX
+#include "CelestialSourcePrimaryGen.hh"
 #include "AllSkyPrimaryGenPowerLaw.hh"
-#endif
-#ifdef USE_HEALPIX
 #include "AllSkyPrimaryGen.hh"
 #endif
 #include "RadioactiveDecayUserActionAssembly.hh"
@@ -591,7 +571,7 @@ public:
 class HistogramEnergySpectrum : public VCSModule
 {
 public:
-  HistogramEnergySpectrum();  
+  HistogramEnergySpectrum();
   ~HistogramEnergySpectrum() = default;
 };
 
@@ -741,13 +721,6 @@ public:
 };
 
 
-class LoadReducedFrame : public LoadFrame
-{
-public:
-  LoadReducedFrame();
-};
-
-
 class XrayEventCollection : public anlnext::BasicModule
 {
 public:
@@ -849,13 +822,11 @@ public:
   SetBadFrames();
 };
 
-
 class SetDynamicPedestals : public VCSModule
 {
 public:
   SetDynamicPedestals();
 };
-
 
 class SetPedestalsByMedian : public VCSModule
 {
@@ -892,13 +863,6 @@ public:
 };
 
 
-class HistogramDecodedImage : public VCSModule
-{
-public:
-  HistogramDecodedImage();
-};
-
-
 class HistogramRawFrameImage : public VCSModule
 {
 public:
@@ -929,42 +893,6 @@ public:
 
 #endif
 
-#ifdef USE_HSQUICKLOOK
-class PushXrayEventToQuickLookDB : public anlnext::BasicModule
-{
-public:
-  PushXrayEventToQuickLookDB();
-};
-
-#endif
-
-#ifdef USE_HSQUICKLOOK
-class PushHistogramToQuickLookDB : public anlnext::BasicModule
-{
-public:
-  PushHistogramToQuickLookDB();
-};
-
-#endif
-
-#ifdef USE_HSQUICKLOOK
-class LoadMetaDataFile : public anlnext::BasicModule
-{
-public:
-  LoadMetaDataFile();
-};
-
-#endif
-
-#ifdef USE_HSQUICKLOOK
-class ExtractXrayEventImageFromQuickLookDB : public ExtractXrayEventImage
-{
-public:
-  ExtractXrayEventImageFromQuickLookDB();
-};
-
-#endif
-
 class GetInputFilesFromDirectory : public anlnext::BasicModule
 {
 public:
@@ -980,7 +908,6 @@ public:
 };
 
 
-#ifdef USE_FITSIO
 class AssignSXIGrade : public VCSModule
 {
 public:
@@ -988,7 +915,6 @@ public:
   ~AssignSXIGrade();
 };
 
-#endif
 
 #ifdef USE_FITSIO
 class AEAttitudeCorrection : public anlnext::BasicModule
@@ -1077,6 +1003,26 @@ class CelestialSourcePrimaryGen : public anlgeant4::IsotropicPrimaryGen
 public:
   CelestialSourcePrimaryGen();
   ~CelestialSourcePrimaryGen();
+};
+
+#endif
+
+#ifdef USE_FITSIO
+class CelestialSourcePrimaryGen : public anlgeant4::IsotropicPrimaryGen
+{
+public:
+  CelestialSourcePrimaryGen();
+  ~CelestialSourcePrimaryGen();
+};
+
+#endif
+
+#ifdef USE_FITSIO
+class AllSkyPrimaryGenPowerLaw : public anlgeant4::IsotropicPrimaryGen
+{
+public:
+  AllSkyPrimaryGenPowerLaw();
+  ~AllSkyPrimaryGenPowerLaw();
 };
 
 #endif
@@ -1210,7 +1156,7 @@ public:
 class SimulateCXBShieldPlate : public VCSModule
 {
 public:
-  SimulateCXBShieldPlate();  
+  SimulateCXBShieldPlate();
   ~SimulateCXBShieldPlate() = default;
 };
 
