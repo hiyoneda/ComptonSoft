@@ -13,6 +13,7 @@ set(RUBY_EXT_INCLUDE_DIRS
   ${ANLNEXT_INC_DIR}
   ${ROOT_INC_DIR}
   ${CLHEP_INC_DIR}
+  ${HEALPIX_INC_DIR}
   ${G4_INC_DIR}
   ${SIMX_INC_DIR}
   ${BOOST_INC_DIR}
@@ -38,6 +39,7 @@ set(RUBY_EXT_LIBRARIES
   ${G4_LIB}
   ${ROOT_LIB}
   ${SIMX_LIB}
+  ${HEALPIX_LIB}
   )
 
 ########################################################
@@ -47,6 +49,9 @@ if(CS_USE_SIMX)
 endif()
 if(CS_USE_FITSIO)
   list(APPEND cxx_definitions -DUSE_FITSIO)
+endif()
+if(CS_USE_HEALPIX)
+  list(APPEND cxx_definitions -DUSE_HEALPIX)
 endif()
 if(CS_USE_HSQUICKLOOK)
   list(APPEND cxx_definitions -DUSE_HSQUICKLOOK)

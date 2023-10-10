@@ -1,6 +1,6 @@
 %module comptonSoft
 %{
-include "AllSkyPrimaryGen"
+#include "AllSkyPrimaryGen.hh"
 #include "ConstructDetector.hh"
 #include "ConstructDetectorForSimulation.hh"
 #include "VCSModule.hh"
@@ -142,6 +142,12 @@ include "AllSkyPrimaryGen"
 #endif
 #ifdef USE_FITSIO
 #include "CelestialSourcePrimaryGen.hh"
+#endif
+#ifdef USE_HEALPIX
+#include "AllSkyPrimaryGenPowerLaw.hh"
+#endif
+#ifdef USE_HEALPIX
+#include "AllSkyPrimaryGen.hh"
 #endif
 #include "RadioactiveDecayUserActionAssembly.hh"
 #include "ActivationUserActionAssembly.hh"
@@ -1073,6 +1079,15 @@ public:
   ~CelestialSourcePrimaryGen();
 };
 
+#endif
+
+#ifdef USE_FITSIO
+class AllSkyPrimaryGen : public anlgeant4::IsotropicPrimaryGen
+{
+public:
+  AllSkyPrimaryGen();
+  ~AllSkyPrimaryGen();
+};
 #endif
 
 class RadioactiveDecayUserActionAssembly : public anlgeant4::StandardUserActionAssembly
